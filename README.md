@@ -1,6 +1,6 @@
-<<<<<<< HEAD
+
 # Promptfoo-Framework
-=======
+
 # OpenAI Model Comparison
 This example compares OpenAI's latest flagship model with its smaller variant across various riddles and reasoning tasks.
 
