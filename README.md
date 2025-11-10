@@ -42,4 +42,4 @@ This example compares OpenAI's current flagship model with its smaller variant a
 - Content validation: Using contains assertions to verify specific answers
 - LLM-based grading: Using llm-rubric assertions for nuanced evaluation criteria
 - Diverse test cases: A variety of riddles testing different reasoning capabilities
->>>>>>> master
+
