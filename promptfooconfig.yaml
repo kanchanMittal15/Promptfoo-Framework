@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Comparing OpenAI flagship and mini models performance on riddles with grading
+
+prompts:
+  - 'Solve this riddle: {{riddle}}'
+
+providers:
+  - openai:gpt-5
+  - openai:gpt-5-mini
+
+defaultTest:
+  assert:
+    # Inference should always cost less than this (USD)
+    - type: cost
+      threshold: 0.002
+    # Inference should always be faster than this (milliseconds)
+    - type: latency
+      threshold: 3000
+
+tests:
+  - vars:
+      riddle: 'I speak without a mouth and hear without ears. I have no body, but I come alive with wind. What am I?'
+    assert:
+      - type: contains
+        value: echo
+      - type: llm-rubric
+        value: |
+          Evaluate the response:
+          - 60% weight for correct reasoning
+          - 40% weight for correct answer ('echo')
+          Do not apologize or add filler text.
+
+  - vars:
+      riddle: 'The more of this there is, the less you see. What is it?'
+    assert:
+      - type: contains
+        value: darkness
+      - type: llm-rubric
+        value: |
+          Evaluate the response:
+          - 60% weight for reasoning (does it explain why?)
+          - 40% weight for answer ('darkness')
+          Ensure concise explanation.
+
+  - vars:
+      riddle: 'What has to be broken before you can use it?'
+    assert:
+      - type: contains
+        value: egg
+      - type: llm-rubric
+        value: |
+          Evaluate the response:
+          - 60% reasoning: does the explanation make sense?
+          - 40% answer correctness: 'egg'
+          Avoid irrelevant text.
+
+  - vars:
+      riddle: 'I’m tall when I’m young, and I’m short when I’m old. What am I?'
+    assert:
+      - type: contains
+        value: candle
+      - type: llm-rubric
+        value: |
+          Grade the response:
+          - 60% reasoning: explanation of "tall when young, short when old"
+          - 40% answer: 'candle'
+          Answer must be clear and relevant.
+
+  - vars:
+      riddle: 'What gets wetter the more it dries?'
+    assert:
+      - type: contains
+        value: towel
+      - type: llm-rubric
+        value: |
+          Evaluate:
+          - 60% reasoning: logical explanation
+          - 40% answer: 'towel'
+          Response should focus on riddle logic.
+
+  - vars:
+      riddle: 'I have branches, but no fruit, trunk, or leaves. What am I?'
+    assert:
+      - type: contains
+        value: bank
+      - type: llm-rubric
+        value: |
+          Grade:
+          - 60% reasoning: explanation of metaphor
+          - 40% answer: 'bank'
+          Response must avoid irrelevant text.
